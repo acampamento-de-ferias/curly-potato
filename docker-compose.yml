@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    restart: always
+    command: yarn dev
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/usr/app
+    external_links:
+      - db
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+  db:
+    container_name: database-curly-potato
+    image: 'postgres:latest'
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=curly-potato
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
